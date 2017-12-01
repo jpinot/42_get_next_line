@@ -6,60 +6,73 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/30 18:52:53 by jpinyot           #+#    #+#             */
-/*   Updated: 2017/11/30 20:26:53 by jpinyot          ###   ########.fr       */
+/*   Updated: 2017/12/01 20:00:41 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-static void	ft_checkfile(fd, mem, int j)
+#include "libft.h"
+#define B_SIZE 1
+
+static void	ft_checkfile(const int fd, t_list mem, int j)
 {
-	if (mem->contnent_size != fd)
+	if (mem.content_size != (size_t)fd)
 	{
-		mem->content_size = fd;
-		mem->content = NULL;
+		mem.content_size = fd;
+		mem.content = NULL;
 		j = fd - 3;
 	}
 }
 
-static void	ft_copy_line(char *c, char *l, char *tmp)
+static void	ft_copy_line(char *c, char *l)
 {
-	char	*tmp2;
+	char	*tmp;
 	int	i;
 	int	j;
+	int g;
 
 	i = 0;
 	j = 0;
-	tmp2 = ft_strnew(ft_strlen(c - tmp));
-	while (tmp2[i] != '\n' )
-	{
-		tmp2[i] = c[j];
-		i++;
+	g = 0;
+	while (c[j] != '\n')
 		j++;
+	tmp = ft_strnew(j);
+	while (c[i] != '\n' )
+	{
+		tmp[i] = c[g];
+		i++;
+		g++;
 	}
-	c = tmp;
-	l = ft_strjoin(l, tmp2)
+	c += j;
+	l = ft_strjoin(l, tmp);
 }
 
 int		get_next_line(const int fd, char **line)
 {
 	static t_list	mem;
-	char		tmp[B_SIZE + 1];
-	int		i;
-	int		j;
+	char			tmp[B_SIZE + 1];
+	int				i;
+	int				j;
 
 	j = 0;
 	if (fd < 0 || line == NULL)
 		return (-1);
 	ft_checkfile(fd, mem, j);
-	if (mem->content)
-		mem->content+= 1;
-	while (i = read(fd, tmp, B_SIZE))
+	if (mem.content)
+		mem.content+= 1;
+	while ((i = read(fd, tmp, B_SIZE)))
 	{
 		tmp[i] = 0;
-		mem->content = ft_strjoin(mem->content, tmp);
-		if (tmp = ft_strchr(mem->content, '\n')
+		mem.content = ft_strjoin(mem.content, tmp);
+		write (1, "D", 1);
+		if (ft_strchr(mem.content, '\n'))
+		{
+			write (1, "R", 1);
 			break ;
+		}
 	}
-	ft_copy_line(mem->content, line[j], tmp);
+	ft_putstr(mem.content);
+	write (1, "T", 1);
+	ft_copy_line(mem.content, line[j]);
 	if (i < B_SIZE)
 		return (0);
 	return (1);
