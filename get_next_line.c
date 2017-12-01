@@ -10,31 +10,57 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-int		ft_check(const int fd, char *buff, int *tmp, int i)
+static void	ft_checkfile(fd, mem, int j)
 {
-	int j;
-
-	while (ft_strstr(buff, tmp) != NULL && )
+	if (mem->contnent_size != fd)
 	{
-		j = read(fd, buff, nbytes);
+		mem->content_size = fd;
+		mem->content = NULL;
+		j = fd - 3;
 	}
-	buff[j] = 0;
+}
+
+static void	ft_copy_line(char *c, char *l, char *tmp)
+{
+	char	*tmp2;
+	int	i;
+	int	j;
+
+	i = 0;
 	j = 0;
-	while(buff[i])
+	tmp2 = ft_strnew(ft_strlen(c - tmp));
+	while (tmp2[i] != '\n' )
+	{
+		tmp2[i] = c[j];
+		i++;
+		j++;
+	}
+	c = tmp;
+	l = ft_strjoin(l, tmp2)
+}
 
 int		get_next_line(const int fd, char **line)
 {
-	static int	*tmp = NULL;
-	char		buff;
-	int			i;
-	int			space_cnt;
+	static t_list	mem;
+	char		tmp[B_SIZE + 1];
+	int		i;
+	int		j;
 
-	i = 1;
-	if (tmp == NULL)
+	j = 0;
+	if (fd < 0 || line == NULL)
+		return (-1);
+	ft_checkfile(fd, mem, j);
+	if (mem->content)
+		mem->content+= 1;
+	while (i = read(fd, tmp, B_SIZE))
 	{
-		tmp = (char *)malloc(sizeof(int));
-		tmp = NULL;
+		tmp[i] = 0;
+		mem->content = ft_strjoin(mem->content, tmp);
+		if (tmp = ft_strchr(mem->content, '\n')
+			break ;
 	}
-	while(i > 0)
-	{
-		if (space_cnt = ft_check(fd, buff, tmp, i)
+	ft_copy_line(mem->content, line[j], tmp);
+	if (i < B_SIZE)
+		return (0);
+	return (1);
+}
