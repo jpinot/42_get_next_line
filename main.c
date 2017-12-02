@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/12/01 18:49:43 by jpinyot           #+#    #+#             */
-/*   Updated: 2017/12/01 19:39:55 by jpinyot          ###   ########.fr       */
+/*   Updated: 2017/12/02 23:03:35 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,7 +15,7 @@
 #include <fcntl.h>
 # include <stdlib.h>
 # include <unistd.h>
-#include "libft.h"
+#include "get_next_line.h"
 
 int     get_next_line(const int fd, char **line);
 
@@ -28,15 +28,21 @@ int		main(int argc, char **argv)
 		fd = 0;
 	else 
 		fd = open(argv[1], O_RDONLY);
-//	while (get_next_line(fd, &line) == 1)
-//	{
-//		//ft_putstr(line);
+	fd = 1;
+	while (get_next_line(fd, &line))
+	{
+		ft_putstr(line);
 //		free(line);
-//	}
-	get_next_line(fd, &line);
-	get_next_line(fd, &line);
-	ft_putstr(line);
-	write (1, "\n", 1);
+	}
+//	get_next_line(fd, &line);
+//	get_next_line(fd, &line);
+//	get_next_line(fd, &line);
+//	get_next_line(fd, &line);
+//	get_next_line(fd, &line);
+//	get_next_line(fd, &line);
+//	get_next_line(fd, &line);
+//	get_next_line(fd, &line);
+//	ft_putstr(line);
 	if (argc == 2)
 		close(fd);
 	return (0);
