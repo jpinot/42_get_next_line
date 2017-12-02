@@ -23,12 +23,12 @@ static void	ft_checkfile(const int fd, t_list mem, int j)
 	}
 }
 
-static void	ft_copy_line(char *c, char *l)
+static int	ft_copy_line(char *c, char *l)
 {
 	char	*tmp;
 	int	i;
 	int	j;
-	int g;
+	int	g;
 
 	i = 0;
 	j = 0;
@@ -36,14 +36,19 @@ static void	ft_copy_line(char *c, char *l)
 	while (c[j] != '\n')
 		j++;
 	tmp = ft_strnew(j);
-	while (c[i] != '\n' )
+	while (c[g] != '\n' )
 	{
 		tmp[i] = c[g];
 		i++;
 		g++;
 	}
-	c += j;
-	l = ft_strjoin(l, tmp);
+	if (c[g] == '\n')
+		tmp[i] = c[g];
+	if (l == NULL)
+		l = ft_strdup(tmp);
+	else
+		l = ft_strjoin(l, tmp);
+	return (g);
 }
 
 int		get_next_line(const int fd, char **line)
@@ -62,18 +67,19 @@ int		get_next_line(const int fd, char **line)
 	while ((i = read(fd, tmp, B_SIZE)))
 	{
 		tmp[i] = 0;
-		mem.content = ft_strjoin(mem.content, tmp);
-		write (1, "D", 1);
+		if (mem.content == NULL)
+                	mem.content = ft_strdup(tmp);
+		else
+			mem.content = ft_strjoin(mem.content, tmp);
 		if (ft_strchr(mem.content, '\n'))
 		{
-			write (1, "R", 1);
 			break ;
 		}
 	}
-	ft_putstr(mem.content);
-	write (1, "T", 1);
-	ft_copy_line(mem.content, line[j]);
-	if (i < B_SIZE)
+	i = ft_copy_line(mem.content, line[j]);
+	mem.content += i;
+	ft_putstr(line[j]);
+	if (!ft_strlen(mem.content))
 		return (0);
 	return (1);
 }

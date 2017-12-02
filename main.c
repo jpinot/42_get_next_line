@@ -28,11 +28,15 @@ int		main(int argc, char **argv)
 		fd = 0;
 	else 
 		fd = open(argv[1], O_RDONLY);
-	while (get_next_line(fd, &line) == 1)
-	{
-		ft_putstr(line);
-		free(line);
-	}
+//	while (get_next_line(fd, &line) == 1)
+//	{
+//		//ft_putstr(line);
+//		free(line);
+//	}
+	get_next_line(fd, &line);
+	get_next_line(fd, &line);
+	ft_putstr(line);
+	write (1, "\n", 1);
 	if (argc == 2)
 		close(fd);
 	return (0);
