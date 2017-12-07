@@ -44,7 +44,7 @@ static int	ft_copy_line(char *c, char **l)
 			break ;
 	}
 	*l = ft_strnew(i + 1);
-	*l = ft_strncpy(*l, c, i + 1);
+	*l = ft_strncpy(*l, c, i);
 	return (i);
 }
 
@@ -61,8 +61,8 @@ int			get_next_line(const int fd, char **line)
 	while ((i = read(fd, tmp, BUFF_SIZE)))
 	{
 		tmp[i] = 0;
-		if (!(mem->content = ft_strjoin(mem->content, tmp)))
-			mem->content = ft_strdup(tmp);
+		mem->content = ft_strjoin(mem->content, tmp);
+//			mem->content = ft_strdup(tmp);
 		if (ft_strchr(tmp, '\n'))
 			break ;
 	}
