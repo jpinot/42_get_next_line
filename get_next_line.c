@@ -6,7 +6,7 @@
 /*   By: jpinyot <marvin@42.fr>                     +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2017/11/30 18:52:53 by jpinyot           #+#    #+#             */
-/*   Updated: 2017/12/03 20:59:41 by jpinyot          ###   ########.fr       */
+/*   Updated: 2017/12/07 20:56:43 by jpinyot          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,14 @@ static t_list	*ft_checkfile(const int fd, t_list **file)
 	return (tmp);
 }
 
-static int	ft_copy_line(char *c, char **l)
+static int		ft_copy_line(char *c, char **l)
 {
 	int		i;
 	int		j;
 
 	i = -1;
 	j = 0;
-	while(c[++i])
+	while (c[++i])
 	{
 		if (c[i] == '\n')
 			break ;
@@ -48,12 +48,28 @@ static int	ft_copy_line(char *c, char **l)
 	return (i);
 }
 
-int			get_next_line(const int fd, char **line)
+static t_list	*ft_del_str(t_list *mem, int i)
+{
+	char *tmp;
+
+	if (i < (int)ft_strlen(mem->content))
+	{
+		tmp = mem->content;
+		mem->content = ft_strdup(mem->content + i + 1);
+		ft_strdel(&tmp);
+	}
+	else
+		ft_strclr(mem->content);
+	return (mem);
+}
+
+int				get_next_line(const int fd, char **line)
 {
 	static t_list	*file;
-	t_list		*mem;
-	char		tmp[BUFF_SIZE + 1];
-	int		i;
+	t_list			*mem;
+	char			tmp[BUFF_SIZE + 1];
+	char			*tmp2;
+	int				i;
 
 	if ((fd < 0 || line == NULL || read(fd, tmp, 0) < 0))
 		return (-1);
@@ -61,17 +77,15 @@ int			get_next_line(const int fd, char **line)
 	while ((i = read(fd, tmp, BUFF_SIZE)))
 	{
 		tmp[i] = 0;
+		tmp2 = mem->content;
 		mem->content = ft_strjoin(mem->content, tmp);
-//			mem->content = ft_strdup(tmp);
+		ft_strdel(&tmp2);
 		if (ft_strchr(tmp, '\n'))
 			break ;
 	}
 	if (i < BUFF_SIZE && !ft_strlen(mem->content))
-                return (0);
+		return (0);
 	i = ft_copy_line(mem->content, line);
-	if (i < (int)ft_strlen(mem->content))
-		mem->content += (i + 1);
-	else
-		ft_strclr(mem->content);
+	mem = ft_del_str(mem, i);
 	return (1);
 }
